@@ -190,7 +190,7 @@ function checkError() {
     return false;
 }
 function showError(msg) {
-    document.querySelector('#error-msg').innerText = JSON.stringify(msg);
+    document.querySelector('#error-msg').innerText = msg.message || JSON.stringify(msg);
     document.querySelector('#error').style.display = 'block';
     window.scrollTo(0, 0);
 }

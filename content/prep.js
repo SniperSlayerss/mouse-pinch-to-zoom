@@ -41,7 +41,7 @@ chrome.storage.sync.get(['mode', 'mult', 'steps', 'fixFixed', 'fixFixedTranspare
 chrome.storage.onChanged.addListener((changes, areaName) => {
 	if (areaName == 'sync') {
 		if (changes.mode) {
-			modeUnset(changes.mode.oldValue);
+			modeUnset(changes.mode.oldValue ?? 0);
 			modeSet(changes.mode.newValue);
 		}
 		if (changes.mult) mult = changes.mult.newValue;
@@ -77,6 +77,11 @@ const modeListeners = [
 		['wheel', mode3Wheel, { passive: false }],
 		['mousedown', mode3MouseDown, { passive: false }],
 		['keydown', mode3KeyDown, { passive: false }]
+	],
+	[
+		// mode 4 - SHIFT
+		['wheel', mode4Wheel, { passive: false }],
+		['mousedown', mode4MouseDown, { passive: false }],
 	],
 ];
 
@@ -196,5 +201,23 @@ function mode3MouseDown(e) {
 function mode3KeyDown(e) {
 	if (e.code === 'CtrlLeft') {
 		e.preventDefault();
+	}
+}
+
+// mode 4 listeners
+function mode4Wheel(e) {
+	if (e.shiftKey) {
+		e.preventDefault(); // prevents the page from scrolling when the user turns the wheel
+		e.stopImmediatePropagation(); // prevents other listeners from triggering (i'm not sure if it's necessary with preventDefault)
+		scrollEvent(e);
+		mouseEventHandler(e);
+	}
+}
+
+function mode4MouseDown(e) {
+	if (e.button == 1 && e.shiftKey && configured) { // button1 is the mouse wheel click (middle mouse button)
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		clickEvent();
 	}
 }

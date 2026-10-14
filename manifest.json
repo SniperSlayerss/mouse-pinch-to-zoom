@@ -15,8 +15,17 @@
         "notifications"
     ],
 
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "mouse-pinch-to-zoom@example.com",
+            "data_collection_permissions": {
+                "required": ["none"]
+            }
+        }
+    },
+
     "background": {
-        "service_worker": "background.js"
+        "scripts": ["background.js"]
     },
 
     "action": {
